@@ -1,0 +1,5 @@
+#!/bin/bash
+exec python $(dirname $0)/${STEP:-stepA_mal}.py "${@}"
+
+# To run test: (run in mal folder)
+# make "test^axolotl^stepX"

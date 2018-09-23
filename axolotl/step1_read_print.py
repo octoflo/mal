@@ -1,4 +1,6 @@
 #0: Creates a REPL
+import reader, printer
+
 def READ(input):
     return reader.read_str(input)
 

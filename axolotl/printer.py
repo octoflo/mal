@@ -1,15 +1,15 @@
 # Holds functions for printing tokens
+import reader
 
-def pr_str(token):
-    # takes tokens and returns a string of it
-    if type(token) == sym:
-        return "token"
-
-    if type(token) == int:
-        return "token"
-
+def print_token(token):
+    "decides the type of token and prints the corresponding statement"
+    if _is_symbol == True:
+        print(read_str)
+    if type(token) == num:
+        print(read_atom)
     if type(token) == list:
-        for i in range len(token):
-            list.append token[i]
-            i++
-        return (list)
+        print read_list
+
+while True:
+    input = raw_input("user> ")
+    print(print_token(input))

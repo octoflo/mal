@@ -1,20 +1,12 @@
 # Holds functions for reading/processing tokens
 import re # for the ability to use regular expressions
+import ax_types
 
 class BlankError(Exception): pass # an exception with a fancy name
-class Symbol(str): pass # starting as a string and changing it
 class Ax_List(list):
     def __str__(self):
         slst = [str(e) for e in self]
         return "(" + " ".join(slst) + ")"
-
-def _symbol(name):
-    "creates a new symbol"
-    return Symbol(name)
-
-def _is_symbol(thing):
-    "tests to see if the token is a symbol"
-    return isinstance(thing, Symbol)
 
 class Reader:
     def __init__(self, tokens, position=0):
@@ -83,8 +75,12 @@ def read_sequence(reader, typ=list, start='(', end=')'):
 def read_list(reader):
     return read_sequence(reader, list, '(', ')')
 
+def _is_list(input):
+    if type(input) == list: True
+    else: False
+
 def read_atom(reader):
-    "returns token if it's a string or turns it into a symbol"
+    "returns token if it's a string or turn it into a symbol"
     token = reader.next()
     if token[0] == "\"":
         return token
@@ -92,7 +88,7 @@ def read_atom(reader):
         try:
             return int(token)
         except ValueError:
-            return _symbol(token)
+            return ax_types._symbol(token)
 
 def read_str(string):
     "returns the string or a blankline"

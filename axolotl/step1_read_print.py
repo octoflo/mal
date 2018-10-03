@@ -1,4 +1,4 @@
-#0: Creates a REPL
+#1: Lexing and Parsing
 import reader, printer
 
 def READ(input):
@@ -11,7 +11,7 @@ def PRINT(input):
     return printer.pr_str(input)
 
 def rep(input, read_f, eval_f, print_f):
-    return print_f(eval_f(read_f(input)))
+    return printer.print_token(PRINT(EVAL(READ(input)))
 
 while True:
     input = raw_input("user> ")
@@ -19,5 +19,3 @@ while True:
         break
     else:
         print rep(input, READ, EVAL, PRINT)
-
-#1: Lexing and Parsing

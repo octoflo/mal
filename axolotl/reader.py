@@ -3,10 +3,6 @@ import re # for the ability to use regular expressions
 import ax_types
 
 class BlankError(Exception): pass # an exception with a fancy name
-class Ax_List(list):
-    def __str__(self):
-        slst = [str(e) for e in self]
-        return "(" + " ".join(slst) + ")"
 
 class Reader:
     def __init__(self, tokens, position=0):
@@ -38,13 +34,17 @@ def tokenize(string):
      |
        "(?:\\.|[^\\"])*"? # (Strings) Starts capturing at a double-quote and stops at the next double-quote (unless proceeded by \, then includes it until the next double-quote)
      |
-       ;.*                # Captures any sequence of characters starting with ; (tokenized).
+       ;.*                # COMMENT: Captures any sequence of characters starting with ; (tokenized).
      |
        [^\s\[\]{}()'"`@,;]+  # Words and operators (anything that's not a special character listed)
     )
     """, re.VERBOSE)
 
     return [f for f in re.findall(pattern, string) if f[0] != ';']
+
+def get_tokens(expression):
+    reader = Reader(tokenize(expression))
+    return read_form(reader)
 
 def read_form(reader):
     "decides if the token is a list to be read or an atom"
@@ -63,7 +63,7 @@ def read_sequence(reader, typ=list, start='(', end=')'):
         raise Exception("expected '" + start + "'")
 
     token = reader.peek()
-    results = Ax_List()
+    results = ax_types.Ax_List()
     while token != end:
         if not token:
             raise Exception("expected '" + end + "', got EOF")
@@ -82,6 +82,8 @@ def _is_list(input):
 def read_atom(reader):
     "returns token if it's a string or turn it into a symbol"
     token = reader.next()
+    if token == None: # Got a comment
+        return None
     if token[0] == "\"":
         return token
     else:
@@ -98,3 +100,9 @@ def read_str(string):
     reader = Reader(tokens)
     return read_form(reader) # ??
     # return read_form(Reader(tokens))
+
+if __name__ == "__main__":
+    # only run this code if the file is ran as a script (not as a library)
+    # is added just for testing purposes if no formal test is written for this file
+    reader = Reader(tokenize('(+ "hello" "world")'))
+    print(read_form(reader))

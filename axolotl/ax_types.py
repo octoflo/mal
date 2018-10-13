@@ -10,8 +10,13 @@ def _is_symbol(input):
     return isinstance(input, Symbol)
 
 # list
+class Ax_List(list):
+    def __str__(self):
+        slst = [str(e) for e in self]
+        return "(" + " ".join(slst) + ")"
+
 def _is_list(input):
-    return type(input)
+    return type(input) == Ax_List # returns True or False
 
 def new_list(func, list):
     new_list = []

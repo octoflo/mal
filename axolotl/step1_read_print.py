@@ -1,21 +1,25 @@
 #1: Lexing and Parsing
 import reader, printer
 
-def READ(input):
-    return reader.read_str(input)
+def READ(input): #input means it's been parsed
+    return reader.get_tokens(input)
 
-def EVAL(input):
-    return input
+def EVAL(ast):
+    return ast
 
-def PRINT(input):
-    return printer.pr_str(input)
+def PRINT(value):
+    return printer.print_token(value)
 
-def rep(input, read_f, eval_f, print_f):
-    return printer.print_token(PRINT(EVAL(READ(input)))
+def REP(input):
+    try:
+        return PRINT(EVAL(READ(input)))
+    except Exception as e:
+        return str(e)
 
-while True:
-    input = raw_input("user> ")
-    if input == "EOF": # End of File
-        break
-    else:
-        print rep(input, READ, EVAL, PRINT)
+if __name__ == "__main__":
+    while True:
+        input = raw_input("user> ")
+        if input == "EOF": # End of File
+            break
+        else:
+            print REP(input)

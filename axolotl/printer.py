@@ -1,11 +1,22 @@
 # Holds functions for printing tokens
-import reader, ax_types
+import ax_types
 
 def print_token(token):
-    "decides the type of token and prints the corresponding statement"
-    if ax_types._is_symbol == True:
-        print(reader.read_str)
-    if type(token) == 'num':
-        print(reader.read_atom)
-    if type(token) == 'list':
-        print(reader.read_list)
+    """decides the type of token and prints the corresponding statement
+    user> (+ 4 5)
+    (+ 4 5)
+    user> (   * 44        8)
+    (* 44 8) """
+
+    if ax_types._is_symbol(token):
+        return str(token)
+    elif type(token) == int or type(token) == float:
+        return str(token)
+    elif type(token) == str:
+        return str(token)
+    elif ax_types._is_list(token):
+        return str(token)
+    else:
+        print(token)
+        print(type(token))
+        return "What!? {0} is a {1}".format(token, type(format))

@@ -2,51 +2,62 @@
 import reader, printer
 import ax_types as types
 
-# reader.tokenize(ast) #??
-
 # read
-def READ(ast):
-    return reader.read_str(ast)
+def READ(input):
+    return reader.get_tokens(input)
 
 # eval
-def eval_ast(ast, repl_env): #repl_env is a parameter because you can't use + on it's own, you need to define what to use
-    print(ast)
-    if types._is_symbol(ast): # if statements returning exceptions use "try"
+def sum(a,b):
+    return a+b
+def sub(a,b):
+    return a-b
+def mult(a,b):
+    return a*b
+def div(a,b):
+    return a/b
+
+repl_env = {'+': sum,
+            '-': sub,
+            '*': mult,
+            '/': div}
+
+def eval_ast(value, repl_env): #repl_env is a parameter because you can't use + on it's own, you need to define what to use
+    "subsitutes the symbol (first param) given to the function in repl_env"
+    if types.is_symbol(value): # if statements returning exceptions use "try"
         try:
-            return repl_env[ast]
+            return repl_env[value]
         except:
-            raise Exception("'" + ast + "' not found")
-    elif types._is_list(ast):
-        types.new_list(EVAL, ast)
+            raise Exception("'" + value + "' not found")
+    elif types.is_list(value) or types.is_vec(value):
+        return [EVAL(s) for s in value] #comprehension
     else:
-        return ast
+        return value
 
 def EVAL(ast):
-    if not reader._is_list(ast):
+    print(ast)
+    print(type(ast))
+    if types.is_vec(ast):
+        print("I found a vec")
         return eval_ast(ast, repl_env)
-
-    if len(ast) == 0:
+    elif types.is_list(ast) and len(ast) == 0:
         return ast
-
-    if reader.is_list(ast):
-        list == eval_ast(ast, repl_env)
-        func == list[0]
-        return func(*list[1:]) #?? whats the *
-
+    elif types.is_list(ast): # if it is an Ax_List then treat it like an instance
+        lst = eval_ast(ast, repl_env)
+        func = lst[0]
+        return func(*lst[1:])
+    else:
+        return eval_ast(ast, repl_env) # could be a list inside of a list
 
 # print
-def PRINT(ast):
-    return printer.pr_str(ast)
+def PRINT(value):
+    return printer.print_token(value)
 
 # REPL
-repl_env = {} #??
-def REP(ast):
-    return PRINT(EVAL(READ(ast), repl_env))
-
-repl_env = {'+': lambda a,b: a+b,
-            '-': lambda a,b: a-b,
-            '*': lambda a,b: a*b,
-            '/': lambda a,b: int(a/b)}
+def REP(input):
+    try:
+        return PRINT(EVAL(READ(input)))
+    except Exception as e:
+        return str(e)
 
 # REPL Loop
 while True:

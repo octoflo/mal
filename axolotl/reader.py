@@ -1,6 +1,6 @@
 # Holds functions for reading/processing tokens
 import re # for the ability to use regular expressions
-import ax_types
+import ax_types as types
 
 class BlankError(Exception): pass # an exception with a fancy name
 
@@ -49,10 +49,16 @@ def get_tokens(expression):
 def read_form(reader):
     "decides if the token is a list to be read or an atom"
     token = reader.peek()
+    # List:
     if token == "(":
         return read_list(reader)
     elif token == ")":
         raise Exception("unexpected ')'")
+    # Vector:
+    if token == "[":
+        return read_vec(reader)
+    elif token == "]":
+        raise Exception("unexpected ']'")
     else:
         return read_atom(reader)
 
@@ -63,7 +69,11 @@ def read_sequence(reader, typ=list, start='(', end=')'):
         raise Exception("expected '" + start + "'")
 
     token = reader.peek()
-    results = ax_types.Ax_List()
+    if typ == Ax_List:
+        results = typ()
+    elif typ == Ax_Vector:
+        results = typ()
+
     while token != end:
         if not token:
             raise Exception("expected '" + end + "', got EOF")
@@ -73,11 +83,10 @@ def read_sequence(reader, typ=list, start='(', end=')'):
     return results
 
 def read_list(reader):
-    return read_sequence(reader, list, '(', ')')
+    return read_sequence(reader, types.Ax_List, '(', ')')
 
-def _is_list(input):
-    if type(input) == list: True
-    else: False
+def read_vec(reader):
+    return read_sequence(reader, types.Ax_Vector, '[', ']')
 
 def read_atom(reader):
     "returns token if it's a string or turn it into a symbol"
@@ -90,7 +99,7 @@ def read_atom(reader):
         try:
             return int(token)
         except ValueError:
-            return ax_types._symbol(token)
+            return types._symbol(token)
 
 def read_str(string):
     "returns the string or a blankline"

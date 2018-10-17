@@ -28,16 +28,27 @@ def eval_ast(value, repl_env): #repl_env is a parameter because you can't use + 
             return repl_env[value]
         except:
             raise Exception("'" + value + "' not found")
-    elif types.is_list(value) or types.is_vec(value):
+    elif types.is_list(value):
         return [EVAL(s) for s in value] #comprehension
+    elif types.is_vector(value):
+        new_lst = types.Ax_Vector()
+        for s in value:
+            new_lst.append(EVAL(s))
+        return new_lst
+    elif types.is_dict(value):
+        new_dic = types.Ax_Dict()
+        for s in value:
+            new_dic.append(EVAL(s))
+        return new_dic
+    elif types.is_keyword(value):
+        return [EVAL(s) for s in value]
     else:
         return value
 
 def EVAL(ast):
-    print(ast)
-    print(type(ast))
-    if types.is_vec(ast):
-        print("I found a vec")
+    if types.is_vector(ast):
+        return eval_ast(ast, repl_env)
+    elif types.is_dict(ast):
         return eval_ast(ast, repl_env)
     elif types.is_list(ast) and len(ast) == 0:
         return ast
@@ -45,6 +56,8 @@ def EVAL(ast):
         lst = eval_ast(ast, repl_env)
         func = lst[0]
         return func(*lst[1:])
+    elif types.is_keyword(ast):
+        return eval_ast(ast, repl_env)
     else:
         return eval_ast(ast, repl_env) # could be a list inside of a list
 

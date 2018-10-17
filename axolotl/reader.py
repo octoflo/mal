@@ -56,9 +56,14 @@ def read_form(reader):
         raise Exception("unexpected ')'")
     # Vector:
     if token == "[":
-        return read_vec(reader)
+        return read_vector(reader)
     elif token == "]":
         raise Exception("unexpected ']'")
+    # Dictionary:
+    if token == "{":
+        return read_dic(reader)
+    elif token == "}":
+        raise Exception("unexpected '}'")
     else:
         return read_atom(reader)
 
@@ -69,10 +74,7 @@ def read_sequence(reader, typ=list, start='(', end=')'):
         raise Exception("expected '" + start + "'")
 
     token = reader.peek()
-    if typ == Ax_List:
-        results = typ()
-    elif typ == Ax_Vector:
-        results = typ()
+    results = typ()
 
     while token != end:
         if not token:
@@ -85,8 +87,11 @@ def read_sequence(reader, typ=list, start='(', end=')'):
 def read_list(reader):
     return read_sequence(reader, types.Ax_List, '(', ')')
 
-def read_vec(reader):
+def read_vector(reader):
     return read_sequence(reader, types.Ax_Vector, '[', ']')
+
+def read_dic(reader):
+    return read_sequence(reader, types.Ax_Dict, '{', '}')
 
 def read_atom(reader):
     "returns token if it's a string or turn it into a symbol"
@@ -95,11 +100,13 @@ def read_atom(reader):
         return None
     if token[0] == "\"":
         return token
+    if token[0] == ":":
+        return types.new_keyword(token)
     else:
         try:
             return int(token)
         except ValueError:
-            return types._symbol(token)
+            return types.new_symbol(token)
 
 def read_str(string):
     "returns the string or a blankline"
@@ -107,8 +114,7 @@ def read_str(string):
     if len(tokens) == 0:
         raise BlankError("Blank entry") # doesn't evaluate anything because there's nothing there
     reader = Reader(tokens)
-    return read_form(reader) # ??
-    # return read_form(Reader(tokens))
+    return read_form(reader)
 
 if __name__ == "__main__":
     # only run this code if the file is ran as a script (not as a library)

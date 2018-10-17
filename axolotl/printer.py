@@ -12,9 +12,7 @@ def print_token(token):
         return str(token)
     elif type(token) == int or type(token) == float:
         return str(token)
-    elif type(token) == str:
-        return str(token)
-    elif types.is_list(token):
+    elif type(token) == str or types.is_list(token) or types.is_vector or types.is_dict:
         return str(token)
     else:
         print(token)

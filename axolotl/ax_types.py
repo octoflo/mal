@@ -83,24 +83,14 @@ def new_dict(func, dic):
     return new_dic
 
 # Keywords (:)
-class Ax_Key(list):
+class Ax_Key(str):
     def __str__(self):
-        key = [str(e) for e in self]
-        return ":" + " ".join(key)
-
-    def __add__(self, rhs): return Ax_Key(list.__add__(self, rhs))
-    def __getitem__(self, i):
-        if type(i) == slice: return Ax_Key(list.__getitem__(self, i))
-        elif i >= len(self): return None
-        else:                return list.__getitem__(self, i)
-    def __getslice__(self, *a): return Ax_Key(list.__getslice__(self, *a))
+        return self
 
 def is_keyword(input):
-    return type(input) == Ax_Key # returns True or False
+    "tests to see if the token is a symbol"
+    return isinstance(input, Ax_Key)
 
-def new_keyword(func, key):
-    new_key = []
-    for i in new_key:
-        new_key.append(func(key))
-        i += 1
-    return new_key
+def new_keyword(name):
+    "creates a new symbol"
+    return Ax_Key(name)

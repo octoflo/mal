@@ -1,15 +1,15 @@
 # Symbols
-class Symbol(str):
+class Ax_Symbol(str):
     def __str__(self):
         return "'" + self
 
 def is_symbol(input):
     "tests to see if the token is a symbol"
-    return isinstance(input, Symbol)
+    return isinstance(input, Ax_Symbol)
 
 def new_symbol(name):
     "creates a new symbol"
-    return Symbol(name)
+    return Ax_Symbol(name)
 
 # list
 class Ax_List(list):
@@ -27,12 +27,15 @@ class Ax_List(list):
 def is_list(input):
     return type(input) == Ax_List # returns True or False
 
-def new_list(func, list):
+def new_list(*values):
+    """
+    def new_list(func, list):
     new_list = []
     for i in list:
         new_list.append(func(list))
         i += 1
-    return new_list
+    return new_list"""
+    return Ax_List(values)
 
 # vectors
 class Ax_Vector(list):
@@ -94,3 +97,22 @@ def is_keyword(input):
 def new_keyword(name):
     "creates a new symbol"
     return Ax_Key(name)
+
+# Scalars
+def is_nil(exp):
+    return exp is None
+def is_true(exp):
+    return exp is True
+def is_false(exp):
+    return exp is False
+
+# Functions
+def Ax_func(Eval, Env, # modules, so you can use any Eval function or Environment you want (instead of importing them)
+            ast, defined_env, params):
+    def fn(*args): # * = parameters with no length restriction
+        return Eval(ast, Env(defined_env, params, Ax_List(args)))
+    return fn
+
+def is_func(input):
+    # is there something callable in the parameters?
+    return callable(input)

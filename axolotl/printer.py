@@ -7,14 +7,21 @@ def print_token(token):
     (+ 4 5)
     user> (   * 44        8)
     (* 44 8) """
-
     if types.is_symbol(token):
+        print("sym")
         return str(token)
     elif type(token) == int or type(token) == float:
         return str(token)
-    elif type(token) == str or types.is_list(token) or types.is_vector or types.is_dict:
+    elif type(token) == str or types.is_list(token) or types.is_vector(token) or types.is_dict(token):
         return str(token)
+
+    elif types.is_nil(token):
+        return "nil"
+    elif types.is_true(token):
+        return "true"
+    elif types.is_false(token):
+        return "false"
+
     else:
-        print(token)
-        print(type(token))
-        return "What!? {0} is a {1}".format(token, type(format))
+        return token.__str__() # ??
+        # return "What!? {0} is a {1}".format(token, type(format))

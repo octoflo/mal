@@ -98,10 +98,16 @@ def read_atom(reader):
     token = reader.next()
     if token == None: # Got a comment
         return None
-    if token[0] == "\"":
+    elif token[0] == "\"":
         return token
-    if token[0] == ":":
+    elif token[0] == ":":
         return types.new_keyword(token)
+    elif token == "nil":
+        return None
+    elif token == "true":
+        return True
+    elif token == "false":
+        return False
     else:
         try:
             return int(token)

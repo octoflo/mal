@@ -46,6 +46,9 @@ def get_tokens(expression):
     reader = Reader(tokenize(expression))
     return read_form(reader)
 
+def unescape(s):
+    return s.replace('\\\\', '\u029e').replace('\\"', '"').replace('\\n', '\n').replace('\u029e', '\\')
+
 def read_form(reader):
     "decides if the token is a list to be read or an atom"
     token = reader.peek()
@@ -98,8 +101,13 @@ def read_atom(reader):
     token = reader.next()
     if token == None: # Got a comment
         return None
+    elif token[0] == '"':
+        if token[-1] == '"':
+            return unescape(token[1:-1])
+        else:
+            raise Exception("expected '\"', got EOF")
     elif token[0] == "\"":
-        return token
+        return read_str(token)
     elif token[0] == ":":
         return types.new_keyword(token)
     elif token == "nil":
@@ -115,12 +123,8 @@ def read_atom(reader):
             return types.new_symbol(token)
 
 def read_str(string):
-    "returns the string or a blankline"
-    tokens = tokenize(string)
-    if len(tokens) == 0:
-        raise BlankError("Blank entry") # doesn't evaluate anything because there's nothing there
-    reader = Reader(tokens)
-    return read_form(reader)
+    "Returns the string or a blankline"
+    return string[1:-1]
 
 if __name__ == "__main__":
     # only run this code if the file is ran as a script (not as a library)

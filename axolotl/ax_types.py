@@ -105,6 +105,11 @@ def is_true(exp):
     return exp is True
 def is_false(exp):
     return exp is False
+def is_string(exp): # ?? is there a way to shorten this function up?
+    if type(exp) == str:
+        return True
+    else:
+        return False
 
 # Functions
 def Ax_func(Eval, Env, # modules, so you can use any Eval function or Environment you want (instead of importing them)

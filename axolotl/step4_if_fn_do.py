@@ -55,7 +55,9 @@ def EVAL(ast, local_env):
             return EVAL(a2, new_env)
 
         elif "do" == a0:
-            return eval_ast(ast[len(ast)], local_env)
+            """excutes multiple expressions but only returns the last one"""
+            results = [EVAL(e, local_env) for e in ast[1:]]
+            return results[-1]
 
         elif "if" == a0:
             a1, a2 = ast[1], ast[2]
@@ -87,18 +89,21 @@ def PRINT(value):
     return printer.print_token(value)
 
 # REPL
+repl_env = env.Env()
+
 def REP(input, global_env):
     try:
         return PRINT(EVAL(READ(input), global_env))
     except Exception as e:
         return str(e)
 
+for func, param in core.namespace.items():
+    repl_env.set(types.new_symbol(func), param)
+
+REP("(def! not (fn* (a) (if a false true)))", repl_env)
+
 # REPL Loop
 if __name__ == "__main__": # if being run as a program
-    repl_env = env.Env()
-
-    for func, param in core.namespace.items():
-        repl_env.set(types.new_symbol(func), param)
 
     while True:
         input = raw_input("user> ")

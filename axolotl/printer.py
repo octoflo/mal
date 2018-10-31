@@ -19,6 +19,7 @@ def print_token(token, print_readably=True):
         return str(token)
 
     # evaluate each part of the list/array/dictionary (in case one is a variable) and print a new list
+
     elif types.is_list(token):
         return "(" + " ".join([print_token(e, print_readably) for e in token]) + ")"
     elif types.is_vector(token):

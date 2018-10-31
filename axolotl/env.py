@@ -1,8 +1,6 @@
 # Functions to set up the environment to store define functions and varibles
 
 class Env():
-    # There is one main environment for Axolotl (repl_env) that holds pre-existing functions, like operators.
-    # Local environments can also be made to hold local variables in functions.
 
     def __init__(self, outer=None, exprs=None, params=None):
         """The outer environment will always be the repl_env. Inner would be the local environments.

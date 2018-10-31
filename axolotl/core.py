@@ -7,21 +7,20 @@ def pr_str(args, print_readably):
     """Prints the token as a string."""
     return [printer.print_token(e, print_readably) for e in args]
 
-def print(*args):
-    """Prints the inputs, keeping any quotes (for a string) or other symbols."""
-    # Ex: with the value "hello world" it will print "hello world" rather than hello world without the quotes
+def display(*args):
+    """Prints the input, keeping any quotes (for a string) or other symbols with it."""
     print(" ".join(pr_str(args, True)))
     return None
 
-def print_str(*args):
+def dis_str(*args):
     """Prints a string with it's quotes."""
     return " ".join(pr_str(args, True))
 
-def str(*args):
+def string(*args):
     """Prints as tring without it's quotes."""
     return "".join(pr_str(args, False))
 
-def println(*args):
+def display_nl(*args):
     """Prints value and goes to the next line."""
     print(" ".join(pr_str(args, False)))
     return None
@@ -47,7 +46,6 @@ def equal(a, b):
     ta, tb = type(a), type(b)
     if types.is_string(a) and types.is_string(b):
         return a == b
-    if not (ta == tb)
 
     if ta == int and tb != int:
         return False
@@ -62,27 +60,29 @@ def equal(a, b):
     else:
         return a == b
 
-# In the following dictionary the keys are the Axolotl Syntax the user will type,
-# and the value is what you should do with the values when the token equals that given function.
+def remaining(int):
+    return int%2
+
 namespace = {
     'list': types.new_list,
     'list?': types.is_list,
     'empty?': is_empty,
-    'count': count,
+    'length': count,
     'true?': types.is_true,
     'false?': types.is_false,
     'none?': types.is_none,
 
-    'display': print,
-    'dis_string': print_str,
-    'string': str,
-    'display_nl': println,
+    'display': display,
+    'dis_string': dis_str,
+    'string': string,
+    'display_nl': display_nl,
 
-    '==': equal,
-    '+': lambda a,b: a+b,
-    '-': lambda a,b: a-b,
-    '*': lambda a,b: a*b,
-    '/': lambda a,b: a/b,
+    '=': equal,
+    'sum': lambda a,b: a+b,
+    'sub': lambda a,b: a-b,
+    'mult': lambda a,b: a*b,
+    'div': lambda a,b: a/b,
+    'remaining': remaining,
 
     '<': lambda a,b: a<b,
     '>': lambda a,b: a>b,

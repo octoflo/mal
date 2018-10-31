@@ -17,24 +17,16 @@ def new_symbol(name):
 # list
 class Ax_List(list):
     def __str__(self):
-        """Will turn each list value into a string in a new list."""
+        """Turns each list value into a new list of strings."""
         slst = [str(e) for e in self]
         return "(" + " ".join(slst) + ")"
-    """
-    def __add__(self, rhs): return Ax_List(list.__add__(self, rhs))
-    def __getitem__(self, i):
-        if type(i) == slice: return Ax_List(list.__getitem__(self, i))
-        elif i >= len(self): return None
-        else:                return list.__getitem__(self, i)
-    def __getslice__(self, *a): return Ax_List(list.__getslice__(self, *a))
-    """
 
 def is_list(input):
     """Tests to see if the token is a list. Returns true or false."""
     return type(input) == Ax_List
 
 def new_list(*values):
-    """Creates a new list of Ax_Lists (meaning each value is a string inside of it)."""
+    """Creates a new list of Ax_Lists (each value is a string)."""
     return Ax_List(values)
 
 # vectors
@@ -43,14 +35,6 @@ class Ax_Vector(list):
         """Will turn each array value into a string in a new array."""
         arr = [str(e) for e in self]
         return "[" + " ".join(arr) + "]"
-    """
-    def __add__(self, rhs): return Ax_Vector(list.__add__(self, rhs))
-    def __getitem__(self, i):
-        if type(i) == slice: return Ax_Vector(list.__getitem__(self, i))
-        elif i >= len(self): return None
-        else:                return list.__getitem__(self, i)
-    def __getslice__(self, *a): return Ax_Vector(list.__getslice__(self, *a))
-    """
 
 def is_vector(input):
     """Tests to see if the token is a vector. Returns true or false."""
@@ -70,14 +54,6 @@ class Ax_Dict(list):
         """Will turn each dictionary value into a string in a new dictionary."""
         dic = [str(e) for e in self]
         return "{" + " ".join(dic) + "}"
-    """
-    def __add__(self, rhs): return Ax_Dict(list.__add__(self, rhs))
-    def __getitem__(self, i):
-        if type(i) == slice: return Ax_Dict(list.__getitem__(self, i))
-        elif i >= len(self): return None
-        else:                return list.__getitem__(self, i)
-    def __getslice__(self, *a): return Ax_Dict(list.__getslice__(self, *a))
-    """
 
 def is_dict(input):
     """Tests to see if the token is a dictionary. Returns true or false."""

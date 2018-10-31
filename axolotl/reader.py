@@ -25,14 +25,12 @@ class Reader:
         return results
 
 def tokenize(string):
-    """This takes a string and returns an array with tokens.
-    Regular Expressions look for certain given inputs and break them up into strings.
-    This is the lexing part of the code."""
+    """This takes a string and returns an array in token form."""
     # Regular Expressions can be pretty confusing to read, so comments are provided for each line.
 
     pattern = re.compile(r"""
 
-    [\s,]*                   # Any number of whitespaces or commas will be ignored and not tokenized.
+    [\s,]*                   # Any number of whitespaces or commas will be ignored, so you can use them to organize however you'd like
     (
       ~@                     # Captures the special two-characters ~@ as tokens.
      |
